@@ -1,0 +1,712 @@
+{
+	"info": {
+		"_postman_id": "399a72cb-4d38-4606-879e-2b7f77b11443",
+		"name": "appts api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "POST create new auth creds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd53e5d8-2a88-4445-beec-31b68a3c78d3",
+								"exec": [
+									"pm.test(\"POST create new credentials status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"appauth_id\": \"pc\",\n    \"appauth_secret\": \"ow\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/appsauth/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsauth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new auth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41df9c42-7d31-4a3b-9e40-7977ce5d4f49",
+								"exec": [
+									"pm.test(\"Get token\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.include.keys('token');",
+									"});",
+									"",
+									"",
+									"let tokenRespone = pm.response.json().token;",
+									"pm.environment.set('token', tokenRespone);",
+									"",
+									"pm.test(\"Using Token: \" + tokenRespone, function () {",
+									"   //testscript",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"appauth_id\": \"pc\",\n    \"appauth_secret\": \"ow\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/appsauth/tokens/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsauth",
+								"tokens",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "appts",
+			"item": [
+				{
+					"name": "POST appts endpoint - Add rec 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e63741ee-25c3-410f-8985-6ddf0a5507e4",
+								"exec": [
+									"pm.test(\"POST record 1 Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Created rec 1\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.include.keys('appt');",
+									"});",
+									"",
+									"",
+									"let recOneRespone = pm.response.json().appt;",
+									"",
+									"let recId = recOneRespone.id;",
+									"pm.environment.set('rec1Id', recId);",
+									"",
+									"pm.test(\"Record created: \" + recId, function () {",
+									"   //testscript",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Mac\",\n    \"last_name\": \"Cheese\",\n    \"service\": \"Tire rotation\",\n    \"status\": \"open\",\n    \"street_address\": \"1111 82th Street\",\n    \"city\": \"BrookLand\",\n    \"state\": \"NW\",\n     \"zip\": \"22313\",\n    \"phone\": \"123-456-1111\",\n    \"date\": \"2020-11-11T12:12:01Z\",\n    \"price\": \"38233.22\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/appts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST appts endpoint - add rec 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d08fc705-ba6c-4aed-97d4-70d9857d9269",
+								"exec": [
+									"pm.test(\"POST record 2 Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Created rec 2\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.include.keys('appt');",
+									"});",
+									"",
+									"",
+									"let recTowRespone = pm.response.json().appt;",
+									"console.log(recTowRespone);",
+									"let recId = recTowRespone.id;",
+									"pm.environment.set('rec2Id', recId);",
+									"",
+									"pm.test(\"Record created: \" + recId, function () {",
+									"   //testscript",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Chilly\",\n    \"last_name\": \"Sports\",\n    \"service\": \"Car Flip\",\n    \"status\": \"open\",\n    \"street_address\": \"2222 82th Street\",\n    \"city\": \"Bronx\",\n    \"state\": \"NC\",\n     \"zip\": \"44313\",\n    \"phone\": \"123-456-2222\",\n    \"date\": \"2020-11-10T12:12:01Z\",\n    \"price\": \"8233.22\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/appts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST appts endpoint - add rec 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5df1b1f8-4d57-4b3f-8838-747c7c7acd88",
+								"exec": [
+									"pm.test(\"POST record 3 Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Created rec 3\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.include.keys('appt');",
+									"});",
+									"",
+									"",
+									"let recThreeRespone = pm.response.json().appt;",
+									"console.log(recThreeRespone);",
+									"let recId = recThreeRespone.id;",
+									"pm.environment.set('rec3Id', recId);",
+									"",
+									"pm.test(\"Record created: \" + recId, function () {",
+									"   //testscript",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Captn\",\n    \"last_name\": \"Crunch\",\n    \"service\": \"Wash\",\n    \"status\": \"open\",\n    \"street_address\": \"3333 82th Street\",\n    \"city\": \"Owo\",\n    \"state\": \"OW\",\n     \"zip\": \"33333\",\n    \"phone\": \"123-456-3333\",\n    \"date\": \"2020-11-13T12:12:01Z\",\n    \"price\": \"233.22\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/appts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET appts all records endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac036666-e82e-4f4c-ac58-3b642e606566",
+								"exec": [
+									"pm.test(\"GET all records Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// get all rec ids in list",
+									"let ids = []",
+									"let response = pm.response.json();",
+									"",
+									"",
+									"for(let i = 0; i < response.appts.length; i++) {",
+									"    ids.push(response.appts[i].id)",
+									"}",
+									"",
+									"",
+									"pm.test(\"Recs exits.  Ids are:  \" + pm.environment.get('rec1Id')",
+									"+ \" || \" + pm.environment.get('rec2Id')",
+									"+ \" || \" + pm.environment.get('rec3Id'), function () {",
+									"    console.log(pm.environment.get('rec1Id'))",
+									"    pm.expect(ids).to.be.an('array').that.does.include(pm.environment.get(",
+									"        'rec1Id',",
+									"        'rec2Id',",
+									"        'rec3Id'",
+									"        ));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/appts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET appts all endpoint date range sorted by price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd75f7e1-d528-4725-8fa0-033e8c22eb60",
+								"exec": [
+									"pm.test(\"GET Date range Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let response = pm.response.json();",
+									"let numberOfRecs = response.appts.length",
+									"let id = response.appts[0].id",
+									"let price1 = parseFloat(response.appts[0].price)",
+									"let price2 = parseFloat(response.appts[1].price)",
+									"",
+									"pm.test(\"GET date range return \" + numberOfRecs +  \" rec within that date range\", function(){",
+									"",
+									"    pm.expect(numberOfRecs).to.equal(2);",
+									"",
+									"});",
+									"",
+									"pm.test(\"GET date range sort by price\", function(){",
+									"",
+									"    pm.expect(price1).lte(price2);",
+									"",
+									"});",
+									"",
+									"pm.test(\"First record has price : \" + response.appts[0].price + \" with date \" + response.appts[0].date, function () {",
+									"   //testscript",
+									"",
+									"});",
+									"",
+									"pm.test(\"Second record has price: \" + response.appts[1].price + \" with date \" + response.appts[1].date, function () {",
+									"   //testscript",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/appts/?startdate=2020-11-11&enddate=2020-12-05",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								""
+							],
+							"query": [
+								{
+									"key": "startdate",
+									"value": "2020-11-11"
+								},
+								{
+									"key": "enddate",
+									"value": "2020-12-05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT update specific record  appts endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d07158f8-990f-43c2-9c9b-2285bef69526",
+								"exec": [
+									"pm.test(\"PUT (update status) Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.appt.status;",
+									"",
+									"",
+									"",
+									"pm.test(\"PUT updated record: \" + pm.environment.get('rec1Id') + \" with value -close-\", function () {",
+									"    pm.expect(status).to.equal('close')",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"status\": \"close\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/appts/{{rec1Id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								"{{rec1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE  one appt endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "10b288d0-9721-4524-af26-fcca34d5bb21",
+								"exec": [
+									"pm.test(\"DELETE \"  + pm.environment.get('rec1Id') +  \": Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/appts/{{rec1Id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								"{{rec1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET appts all endpoint without the deleted one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f1738f0-7d83-413b-8cd0-f0cca624525e",
+								"exec": [
+									"pm.test(\"GET all records after delete Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// get all rec ids in list",
+									"let ids = []",
+									"let response = pm.response.json();",
+									"",
+									"",
+									"for(let i = 0; i < response.appts.length; i++) {",
+									"    ids.push(response.appts[i].id)",
+									"}",
+									"",
+									"",
+									"pm.test(\"Recs exits.  Ids are:  \" + ids, function () {",
+									"    pm.expect(ids).to.be.an('array').that.does.include(pm.environment.get(",
+									"        'rec2Id',",
+									"        'rec3Id'",
+									"        ));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/appts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET one appt endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "33107318-3c9c-4637-bcd6-ed45b0f4e9e6",
+								"exec": [
+									"pm.test(\"GET one records Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// get all rec ids in list",
+									"let ids = []",
+									"let response = pm.response.json();",
+									"let oneRec = response.appt.id;",
+									"",
+									"",
+									"",
+									"",
+									"pm.test(\"Getting record 2:  \" + oneRec, function () {",
+									"    pm.expect(oneRec).to.equal(pm.environment.get(",
+									"        'rec2Id'",
+									"        ));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-id",
+								"value": "pc",
+								"type": "text"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/appts/{{rec2Id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appts",
+								"{{rec2Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
